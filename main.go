@@ -11,7 +11,7 @@ import (
 func main() {
 	// Setup Routes
 	router := httprouter.New()
-	router.GET("/", routes.Index)
+	router.GET("/", routes.indexHandler)
 
 	// Setup Middleware
 	mh := make(middleware.MiddlewareHandler)
