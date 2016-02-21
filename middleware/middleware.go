@@ -8,8 +8,8 @@ import (
 type MiddlewareHandler map[string]http.Handler
 
 const (
-	// stsHeader = "Strict-Transport-Security: max-age=31536000; includeSubDomains"
-	frameOptionsHeader  = "X-Frame-Optionsi: Deny"
+	stsHeader           = "Strict-Transport-Security: max-age=31536000; includeSubDomains"
+	frameOptionsHeader  = "X-Frame-Options: Deny"
 	contentTypeHeader   = "X-Content-Type-Options: nosniff"
 	xssProtectionHeader = "X-XSS-Protection: 1; mode=block"
 	cspHeader           = "Content-Security-Policy: default-src 'self'"
@@ -31,12 +31,11 @@ func (mh MiddlewareHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	mh[r.Host].ServeHTTP(w, r)
 }
 
-// TODO: Enable HSTS when TLS is implemented
-//
 func AddSecurityHeaders(w http.ResponseWriter) {
 	headers := make(map[string]string)
-	// headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+	headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
 	headers["X-Content-Type-Options"] = "nosniff"
+	headers["X-Frame-Options"] = "Deny"
 	headers["X-XSS-Protection"] = "1; mode=block"
 	headers["Content-Security-Policy"] = "default-src 'self'"
 
